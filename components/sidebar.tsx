@@ -1,0 +1,97 @@
+"use client"
+
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { cn } from "@/lib/utils"
+import {
+  BarChart,
+  Phone,
+  FileText,
+  Home,
+  Settings,
+  HelpCircle,
+  Users,
+  Calendar,
+  Box,
+  LineChart,
+  Globe,
+  Activity,
+} from "lucide-react"
+
+const sidebarItems = [
+  { name: "Home", href: "/", icon: Home },
+  { name: "Analytics", href: "/analytics", icon: BarChart },
+  { name: "Campaigns", href: "/campaigns", icon: Phone },
+  { name: "Demographics", href: "/demographics", icon: Globe },
+  { name: "Behaviors", href: "/behaviors", icon: Activity },
+  { name: "Reports", href: "/reports", icon: FileText, disabled: true },
+  { name: "Users", href: "/users", icon: Users, disabled: true },
+  { name: "Events", href: "/events", icon: Calendar, disabled: true },
+  { name: "Integrations", href: "/integrations", icon: Box, disabled: true },
+  { name: "Trends", href: "/trends", icon: LineChart, disabled: true },
+]
+
+const bottomItems = [
+  { name: "Help", href: "/help", icon: HelpCircle, disabled: true },
+  { name: "Settings", href: "/settings", icon: Settings, disabled: true },
+]
+
+interface SidebarProps {
+  logoFont: string
+}
+
+export function Sidebar({ logoFont }: SidebarProps) {
+  const pathname = usePathname()
+
+  return (
+    <div className="w-64 border-r bg-background p-4 space-y-4 flex flex-col">
+      <div className="flex items-center gap-2 px-2 mb-4">
+        <span className={`font-semibold text-2xl ${logoFont}`}>chattering</span>
+      </div>
+
+      <nav className="space-y-2 flex-1">
+        {sidebarItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.disabled ? "#" : item.href}
+            className={cn(
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-foreground transition-all hover:text-foreground",
+              pathname === item.href ? "bg-accent" : "",
+              item.disabled && "opacity-50 cursor-not-allowed hover:text-muted-foreground",
+            )}
+            onClick={(e) => {
+              if (item.disabled) {
+                e.preventDefault()
+              }
+            }}
+          >
+            <item.icon className="h-4 w-4" />
+            {item.name}
+          </Link>
+        ))}
+      </nav>
+
+      <div className="border-t pt-4 space-y-2">
+        {bottomItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.disabled ? "#" : item.href}
+            className={cn(
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-foreground transition-all hover:text-foreground",
+              item.disabled && "opacity-50 cursor-not-allowed hover:text-muted-foreground",
+            )}
+            onClick={(e) => {
+              if (item.disabled) {
+                e.preventDefault()
+              }
+            }}
+          >
+            <item.icon className="h-4 w-4" />
+            {item.name}
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
+}
+
