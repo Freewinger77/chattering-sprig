@@ -1,28 +1,31 @@
-"use client"
-
 import { ComposableMap, Geographies, Geography } from "react-simple-maps"
+import { scaleLinear } from "d3-scale"
 
 const geoUrl = "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json"
 
-export function WorldMap() {
+const colorScale = scaleLinear<string>().domain([0, 5]).range(["#ffedea", "#ff5233"])
+
+interface WorldMapProps {
+  data: { [key: string]: number }
+}
+
+export default function WorldMap({ data }: WorldMapProps) {
   return (
     <ComposableMap>
       <Geographies geography={geoUrl}>
         {({ geographies }) =>
-          geographies.map((geo) => (
-            <Geography
-              key={geo.rsmKey}
-              geography={geo}
-              fill="#e5e7eb"
-              stroke="#fff"
-              strokeWidth={0.5}
-              style={{
-                default: { outline: "none" },
-                hover: { fill: "#d1d5db", outline: "none" },
-                pressed: { outline: "none" },
-              }}
-            />
-          ))
+          geographies.map((geo) => {
+            const d = data[geo.properties.ISO_A3] || 0
+            return (
+              <Geography
+                key={geo.rsmKey}
+                geography={geo}
+                fill={d ? colorScale(d) : "#F5F4F6"}
+                stroke="#D6D6DA"
+                strokeWidth={0.5}
+              />
+            )
+          })
         }
       </Geographies>
     </ComposableMap>

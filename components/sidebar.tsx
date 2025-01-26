@@ -1,30 +1,16 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import {
-  BarChart,
-  Phone,
-  FileText,
-  Home,
-  Settings,
-  HelpCircle,
-  Users,
-  Calendar,
-  Box,
-  LineChart,
-  Globe,
-  Activity,
-} from "lucide-react"
+import { BarChart, Phone, FileText, Home, Settings, HelpCircle, Users, Calendar, Box, LineChart } from "lucide-react"
 
 const sidebarItems = [
   { name: "Home", href: "/", icon: Home },
   { name: "Analytics", href: "/analytics", icon: BarChart },
   { name: "Campaigns", href: "/campaigns", icon: Phone },
-  { name: "Demographics", href: "/demographics", icon: Globe },
-  { name: "Behaviors", href: "/behaviors", icon: Activity },
-  { name: "Reports", href: "/reports", icon: FileText, disabled: true },
+  { name: "Reports", href: "/reports", icon: FileText },
   { name: "Users", href: "/users", icon: Users, disabled: true },
   { name: "Events", href: "/events", icon: Calendar, disabled: true },
   { name: "Integrations", href: "/integrations", icon: Box, disabled: true },
@@ -42,6 +28,12 @@ interface SidebarProps {
 
 export function Sidebar({ logoFont }: SidebarProps) {
   const pathname = usePathname()
+  const [campaignFinished, setCampaignFinished] = useState(false)
+
+  useEffect(() => {
+    const isFinished = localStorage.getItem("campaignFinished")
+    setCampaignFinished(isFinished === "true")
+  }, [])
 
   return (
     <div className="w-64 border-r bg-background p-4 space-y-4 flex flex-col">

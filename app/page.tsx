@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import {
   Phone,
@@ -19,6 +20,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import Link from "next/link"
 
 const metrics = [
   {
@@ -99,13 +111,67 @@ const systemMetrics = [
   },
 ]
 
+const mockCampaigns = [
+  {
+    id: 2453,
+    title: "Customer Feedback Q2",
+    successRate: 85,
+    responseRate: 78,
+    keyIssue: "UI Complexity",
+    jiraTicketAssigned: true,
+  },
+  {
+    id: 2454,
+    title: "Product Feature Survey",
+    successRate: 92,
+    responseRate: 81,
+    keyIssue: "Missing Features",
+    jiraTicketAssigned: false,
+  },
+  {
+    id: 2455,
+    title: "User Experience Improvement",
+    successRate: 88,
+    responseRate: 75,
+    keyIssue: "Navigation Issues",
+    jiraTicketAssigned: true,
+  },
+]
+
 export default function HomePage() {
   const router = useRouter()
+  const [phoneNumber, setPhoneNumber] = useState("")
+
+  const handleCallMe = () => {
+    // Implement call functionality here
+    console.log(`Calling ${phoneNumber}`)
+  }
 
   return (
     <div className="space-y-8">
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle>Welcome to Our Platform</CardTitle>
+          <CardDescription>
+            Experience AI Voice agent campaigns for customer interviews. We've designed this demo on a limited problem
+            and would like you to be a sample customer.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center space-x-2">
+            <Input
+              type="tel"
+              placeholder="Enter your phone number"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+            <Button onClick={handleCallMe}>Call me now</Button>
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="flex justify-between items-center">
-        <p className="text-muted-foreground">Welcome back! Here's your campaign overview.</p>
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
         <Button onClick={() => router.push("/campaigns")}>New Campaign</Button>
       </div>
 
@@ -202,18 +268,20 @@ export default function HomePage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="flex items-center space-x-4">
-                  <div className="p-2 rounded-full bg-muted">
-                    <UserCheck className="h-4 w-4 text-primary" />
-                  </div>
-                  <div>
-                    <div className="font-medium">Campaign #{2453 + i} completed</div>
-                    <div className="text-sm text-muted-foreground">
-                      {150 - i * 12} users reached • {85 + i}% response rate
+              {mockCampaigns.map((campaign) => (
+                <Link key={campaign.id} href={`/reports/${campaign.id}`} className="block">
+                  <div className="flex items-center space-x-4 p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="p-2 rounded-full bg-muted">
+                      <UserCheck className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <div className="font-medium">Campaign #{campaign.id} completed</div>
+                      <div className="text-sm text-muted-foreground">
+                        {campaign.responseRate}% response rate • {campaign.successRate}% success rate
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </CardContent>
@@ -247,6 +315,8 @@ export default function HomePage() {
           </CardContent>
         </Card>
       </div>
+
+      {/*Removed the dialog as per the update request*/}
     </div>
   )
 }
