@@ -141,10 +141,10 @@ const mockCampaigns = [
 export default function HomePage() {
   const router = useRouter()
   const [phoneNumber, setPhoneNumber] = useState("")
+  const [showThankYou, setShowThankYou] = useState(false)
 
   const handleCallMe = () => {
-    // Implement call functionality here
-    console.log(`Calling ${phoneNumber}`)
+    setShowThankYou(true)
   }
 
   return (
@@ -154,16 +154,40 @@ export default function HomePage() {
           <CardTitle>Welcome to Our Platform</CardTitle>
           <CardDescription>
             Experience AI Voice agent campaigns for customer interviews. We've designed this demo on a limited problem
-            and would like you to be a sample customer.
-          </CardDescription>
+            and would like you to be a sample customer using the following prompt.
+            <br></br>
+            <br></br>
+                      </CardDescription>
+            <CardDescription className="bg-gray-400 text-white p-4 rounded-lg">
+              You are an interviewer working for Travel.com, a travel provider offering flights and hotel bookings. The
+              CEO has approached you after noticing very low conversion rates—many people have signed up and created an
+              account but have not made any transactions on the platform for flights or hotels. You are interviewing a
+              user who has signed up on the platform but has not made a transaction yet.
+            </CardDescription>
+
         </CardHeader>
         <CardContent>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 md:w-1/2">
+            <Select defaultValue="+1">
+              <SelectTrigger className="w-[100px]">
+                <SelectValue placeholder="Country" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="+1">🇺🇸 (+1)</SelectItem>
+                <SelectItem value="+44">🇬🇧 (+44)</SelectItem>
+              </SelectContent>
+            </Select>
             <Input
               type="tel"
-              placeholder="Enter your phone number"
+              placeholder="Enter your number"
               value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "")
+                if (value.length <= 10) {
+                  setPhoneNumber(value)
+                }
+              }}
+              className="flex-1"
             />
             <Button onClick={handleCallMe}>Call me now</Button>
           </div>
@@ -316,7 +340,17 @@ export default function HomePage() {
         </Card>
       </div>
 
-      {/*Removed the dialog as per the update request*/}
+      <Dialog open={showThankYou} onOpenChange={setShowThankYou}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Thank You!</DialogTitle>
+            <DialogDescription>Thank you for your interest. You can expect a call shortly.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button onClick={() => setShowThankYou(false)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

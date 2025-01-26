@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { InteractiveMap } from "@/components/interactive-map"
+import { CountryList } from "@/components/country-list"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -11,7 +14,6 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
   PieChart,
   Pie,
@@ -66,11 +68,14 @@ const mockCampaignReport: CampaignReport = {
   ],
 }
 
+
 export default function CampaignReportPage() {
   const params = useParams()
   const router = useRouter()
   const [report, setReport] = useState<CampaignReport | null>(null)
   const [targetingElements, setTargetingElements] = useState("")
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
+
 
   useEffect(() => {
     // In a real application, you would fetch the report data from an API here
@@ -138,7 +143,7 @@ export default function CampaignReportPage() {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis type="number" />
               <YAxis dataKey="issue" type="category" width={150} />
-              <Tooltip />
+
               <Bar dataKey="percentage" fill="#8884d8" />
             </BarChart>
           </ResponsiveContainer>
@@ -165,7 +170,7 @@ export default function CampaignReportPage() {
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip />
+
             </PieChart>
           </ResponsiveContainer>
         </CardContent>
@@ -181,7 +186,7 @@ export default function CampaignReportPage() {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="time" />
               <YAxis />
-              <Tooltip />
+
               <Line type="monotone" dataKey="users" stroke="#8884d8" name="Total Users" />
               <Line type="monotone" dataKey="positiveResponses" stroke="#82ca9d" name="Positive Responses" />
               <Line type="monotone" dataKey="negativeResponses" stroke="#ffc658" name="Negative Responses" />
@@ -189,7 +194,7 @@ export default function CampaignReportPage() {
           </ResponsiveContainer>
         </CardContent>
       </Card>
-
+     
       <Card>
         <CardHeader>
           <CardTitle>Summary</CardTitle>

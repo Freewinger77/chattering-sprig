@@ -39,13 +39,30 @@ const mockCampaigns: Campaign[] = [
     keyIssue: "Navigation Issues",
     jiraTicketAssigned: true,
   },
+  {
+    id: 2456,
+    title: "Mobile App Usability",
+    successRate: 79,
+    responseRate: 72,
+    keyIssue: "Performance Issues",
+    jiraTicketAssigned: false,
+  },
+  {
+    id: 2457,
+    title: "Customer Support Satisfaction",
+    successRate: 95,
+    responseRate: 85,
+    keyIssue: "Response Time",
+    jiraTicketAssigned: true,
+  },
 ]
 
 export default function ReportsPage() {
   const [campaigns, setCampaigns] = useState<Campaign[]>(mockCampaigns)
 
   useEffect(() => {
-    // In a real application, you would fetch the campaigns from an API here
+    const storedCampaigns = JSON.parse(localStorage.getItem("campaigns") || "[]")
+    setCampaigns([...mockCampaigns, ...storedCampaigns])
   }, [])
 
   return (

@@ -4,7 +4,7 @@ import { useState } from "react"
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps"
 import { Tooltip, TooltipRoot, TooltipTrigger, TooltipContent, TooltipArrow } from "@/components/ui/tooltip"
 
-const geoUrl = "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json"
+const geoUrl = "https://raw.githubusercontent.com/subyfly/topojson/refs/heads/master/world-countries.json"
 
 const heatmapData = {
   USA: 0.8,

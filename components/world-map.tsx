@@ -1,7 +1,7 @@
 import { ComposableMap, Geographies, Geography } from "react-simple-maps"
 import { scaleLinear } from "d3-scale"
 
-const geoUrl = "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json"
+const geoUrl = "https://raw.githubusercontent.com/subyfly/topojson/refs/heads/master/world-countries.json"
 
 const colorScale = scaleLinear<string>().domain([0, 5]).range(["#ffedea", "#ff5233"])
 
