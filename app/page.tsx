@@ -206,6 +206,7 @@ export default function HomePage() {
               <SelectContent>
                 <SelectItem value="+1">🇺🇸 (+1)</SelectItem>
                 <SelectItem value="+44">🇬🇧 (+44)</SelectItem>
+                <SelectItem value="+60">🇲🇾 (+60)</SelectItem>
               </SelectContent>
             </Select>
             <Input
