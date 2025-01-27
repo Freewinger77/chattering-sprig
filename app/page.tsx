@@ -185,15 +185,15 @@ export default function HomePage() {
           <CardTitle>Welcome to Our Platform</CardTitle>
           <CardDescription>
             Experience AI Voice agent campaigns for customer interviews. We've designed this demo on a limited problem
-            and would like you to be a sample customer using the following prompt.
+            and would like you to be a sample customer using the following scenario.
             <br></br>
             <br></br>
                       </CardDescription>
             <CardDescription className="bg-gray-400 text-white p-4 rounded-lg">
-              You are an interviewer working for Travel.com, a travel provider offering flights and hotel bookings. The
-              CEO has approached you after noticing very low conversion rates—many people have signed up and created an
-              account but have not made any transactions on the platform for flights or hotels. You are interviewing a
-              user who has signed up on the platform but has not made a transaction yet.
+              You are a customer thinking about booking a trip on a platform called Travel.com. You have made a profile
+              and have broesed for a flight & hotel but have not yet made a flight purchase yet. Travel.com is conducting a study to 
+            improve conversion - and you have been selec ted to take a survey. FIll in your number and click the button 
+            to begin the interview.
             </CardDescription>
 
         </CardHeader>
