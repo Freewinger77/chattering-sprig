@@ -17,7 +17,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
-const COST_PER_USER = 0.5
+const COST_PER_USER = 0.8
 
 export default function NewCampaignPage() {
   const [title, setTitle] = useState("")
@@ -66,15 +66,19 @@ export default function NewCampaignPage() {
               <div className="p-4 bg-muted rounded-lg">{issue || "No issue specified"}</div>
             </div>
 
-            <div className="space-y-2">
-              <Label>Reference Campaign</Label>
-              <Input value={referenceId || ""} disabled />
-            </div>
+            {referenceId && (
+              <div className="space-y-2">
+                <Label>Reference Campaign</Label>
+                <Input value={referenceId} disabled />
+              </div>
+            )}
 
-            <div className="space-y-2">
-              <Label>Targeting Elements</Label>
-              <Textarea value={targeting || ""} disabled />
-            </div>
+            {targeting && (
+              <div className="space-y-2">
+                <Label>Targeting Elements</Label>
+                <Textarea value={targeting} disabled />
+              </div>
+            )}
 
             <div className="space-y-4">
               <Label>Target Users: {targetUsers[0]}</Label>

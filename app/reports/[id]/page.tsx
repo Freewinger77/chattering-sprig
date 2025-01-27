@@ -20,6 +20,8 @@ import {
   Cell,
   LineChart,
   Line,
+  Tooltip,
+  Legend,
 } from "recharts"
 
 interface CampaignReport {
@@ -68,14 +70,12 @@ const mockCampaignReport: CampaignReport = {
   ],
 }
 
-
 export default function CampaignReportPage() {
   const params = useParams()
   const router = useRouter()
   const [report, setReport] = useState<CampaignReport | null>(null)
   const [targetingElements, setTargetingElements] = useState("")
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
-
 
   useEffect(() => {
     // In a real application, you would fetch the report data from an API here
@@ -170,7 +170,8 @@ export default function CampaignReportPage() {
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-
+              <Tooltip />
+              <Legend />
             </PieChart>
           </ResponsiveContainer>
         </CardContent>
@@ -194,7 +195,7 @@ export default function CampaignReportPage() {
           </ResponsiveContainer>
         </CardContent>
       </Card>
-     
+
       <Card>
         <CardHeader>
           <CardTitle>Summary</CardTitle>

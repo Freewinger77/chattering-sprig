@@ -25,11 +25,11 @@ const sidebarItems = [
   { name: "Home", href: "/", icon: Home },
   { name: "Probe", href: "/study", icon: Pipette },
   { name: "Campaigns", href: "/campaigns", icon: Phone },
-  { name: "Reports", href: "/reports", icon: FileText },
   { name: "Analytics", href: "/analytics", icon: BarChart },
-  { name: "Trends", href: "/trends", icon: LineChart, disabled: true },
+  { name: "Reports", href: "/reports", icon: FileText },
   { name: "Events", href: "/events", icon: Calendar, disabled: true },
   { name: "Integrations", href: "/integrations", icon: Box, disabled: true },
+  { name: "Trends", href: "/trends", icon: LineChart, disabled: true },
 ]
 
 const bottomItems = [
