@@ -151,18 +151,18 @@ export default function HomePage() {
   const handleCall = async () => {
     const fullNumber = `${countryCode}${phoneNumber}`;
     const requestBody = {
-      assistantId: "4b94c98d-0338-43db-87ff-e0b7db5472b6",
+      assistantId: "e42213d6-6d57-4ed8-b201-dae80335fb8b",
       customer: {
         number: fullNumber,
       },
-      phoneNumberId: "6e6cbd41-1cc0-45c9-8507-f32e75f58d24",
+      phoneNumberId: "c2099d2a-4514-47a4-a2c3-7a711d3635dd",
     };
 
     try {
       const response = await fetch("https://api.vapi.ai/call", {
         method: "POST",
         headers: {
-          Authorization: "Bearer cbc1135c-9768-48b4-8a8b-153f3cbc18b8",
+          Authorization: "Bearer 7f705381-1926-45b4-8238-df239825e3fc",
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
