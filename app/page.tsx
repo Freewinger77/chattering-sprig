@@ -188,19 +188,16 @@ export default function HomePage() {
             and would like you to be a sample customer using the following scenario.
             <br></br>
             <br></br>
-                      </CardDescription>
-            <CardDescription className="bg-gray-400 text-white p-4 rounded-lg">
-              You are a customer thinking about booking a trip on a platform called Travel.com. You have made a profile
-              and have broesed for a flight & hotel but have not yet made a flight purchase yet. Travel.com is conducting a study to 
-            improve conversion - and you have been selected to take a survey. FIll in your number and click the button 
-            to begin the interview.
+          </CardDescription>
+          <CardDescription className="bg-gray-400 text-white p-4 rounded-lg">
+            You are a customer thinking about booking a trip on a platform called Travel.com. You have made a profile and have browsed for a flight & hotel but have not yet made a flight purchase. Travel.com is conducting a study to improve conversion, and you have been selected to take a survey. Fill in your number and click the button to begin the interview.
             <br></br>
-            Fill in your number and click the Call me now button to begin. Once you recieve the call, say 'Hello' to begin!
-            </CardDescription>
+            Fill in your number and click the "Call me now" button to begin. Once you receive the call, say 'Hello' to begin!
+          </CardDescription>
 
         </CardHeader>
         <CardContent>
-          <div className="flex items-center space-x-2 md:w-1/2">
+          <div className="flex items-center space-x-2 md:w-1/2">s
             <Select defaultValue={countryCode} onValueChange={setCountryCode}>
               <SelectTrigger className="w-[100px]">
                 <SelectValue placeholder="Country" />
