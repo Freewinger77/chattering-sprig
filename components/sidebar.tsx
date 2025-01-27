@@ -23,13 +23,13 @@ import { ThemeToggle } from "@/components/theme-toggle"
 
 const sidebarItems = [
   { name: "Home", href: "/", icon: Home },
-  { name: "Analytics", href: "/analytics", icon: BarChart },
   { name: "Probe", href: "/study", icon: Pipette },
   { name: "Campaigns", href: "/campaigns", icon: Phone },
+  { name: "Analytics", href: "/analytics", icon: BarChart },
   { name: "Reports", href: "/reports", icon: FileText },
+  { name: "Trends", href: "/trends", icon: LineChart, disabled: true },
   { name: "Events", href: "/events", icon: Calendar, disabled: true },
   { name: "Integrations", href: "/integrations", icon: Box, disabled: true },
-  { name: "Trends", href: "/trends", icon: LineChart, disabled: true },
 ]
 
 const bottomItems = [
