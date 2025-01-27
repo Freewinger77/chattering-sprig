@@ -140,12 +140,43 @@ const mockCampaigns = [
 
 export default function HomePage() {
   const router = useRouter()
-  const [phoneNumber, setPhoneNumber] = useState("")
   const [showThankYou, setShowThankYou] = useState(false)
+  const [countryCode, setCountryCode] = useState("+1");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleCallMe = () => {
     setShowThankYou(true)
   }
+
+  const handleCall = async () => {
+    const fullNumber = `${countryCode}${phoneNumber}`;
+    const requestBody = {
+      assistantId: "4b94c98d-0338-43db-87ff-e0b7db5472b6",
+      customer: {
+        number: fullNumber,
+      },
+      phoneNumberId: "6e6cbd41-1cc0-45c9-8507-f32e75f58d24",
+    };
+
+    try {
+      const response = await fetch("https://api.vapi.ai/call", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer cbc1135c-9768-48b4-8a8b-153f3cbc18b8",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to make the call");
+      }
+
+      alert("Call initiated successfully!");
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -168,7 +199,7 @@ export default function HomePage() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center space-x-2 md:w-1/2">
-            <Select defaultValue="+1">
+            <Select defaultValue={countryCode} onValueChange={setCountryCode}>
               <SelectTrigger className="w-[100px]">
                 <SelectValue placeholder="Country" />
               </SelectTrigger>
@@ -189,7 +220,7 @@ export default function HomePage() {
               }}
               className="flex-1"
             />
-            <Button onClick={handleCallMe}>Call me now</Button>
+            <Button onClick={handleCall}>Call me now</Button>
           </div>
         </CardContent>
       </Card>
@@ -343,7 +374,7 @@ export default function HomePage() {
       <Dialog open={showThankYou} onOpenChange={setShowThankYou}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Thank You!</DialogTitle>
+            <DialogTitle>Call requested</DialogTitle>
             <DialogDescription>Thank you for your interest. You can expect a call shortly.</DialogDescription>
           </DialogHeader>
           <DialogFooter>
