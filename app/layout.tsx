@@ -1,3 +1,4 @@
+import Head from "next/head"
 import type { Metadata } from "next"
 import { Inter, Caveat } from "next/font/google"
 import "./globals.css"
@@ -19,6 +20,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Head>
+        <script type="text/javascript">
+          (function(c,l,a,r,i,t,y){
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "q0ke3alpgi");
+        </script>
+      </Head>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <div className="flex h-screen">
