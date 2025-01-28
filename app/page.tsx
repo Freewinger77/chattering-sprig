@@ -192,7 +192,7 @@ export default function HomePage() {
           <CardDescription className="bg-gray-400 text-white p-4 rounded-lg">
             You are a customer thinking about booking a trip on a platform called Travel.com. You have made a profile and have browsed for a flight & hotel but have not yet made a flight purchase. Travel.com is conducting a study to improve conversion, and you have been selected to take a survey.
             <br></br>
-            Fill in your number and click the "Call me now" button to begin the interview. Once you receive the call, say 'Hello' to begin.
+            Fill in your number and click the "Call me now" button to begin the interview.
           </CardDescription>
 
         </CardHeader>
