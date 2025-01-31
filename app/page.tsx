@@ -1,387 +1,206 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import {
-  Phone,
-  Users,
-  Clock,
-  TrendingUp,
-  DollarSign,
-  Activity,
-  ArrowUp,
-  ArrowDown,
-  Zap,
-  PhoneCall,
-  UserCheck,
-  BadgeCheck,
-} from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
 import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { ArrowRight } from "lucide-react"
+import Image from "next/image"
 
-const metrics = [
-  {
-    title: "Total Campaigns",
-    value: "24",
-    change: "+12%",
-    trend: "up",
-    icon: Phone,
-    description: "Active voice feedback campaigns",
-  },
-  {
-    title: "Users Reached",
-    value: "2,841",
-    change: "+18%",
-    trend: "up",
-    icon: Users,
-    description: "Total users interviewed",
-  },
-  {
-    title: "Avg. Call Duration",
-    value: "4m 12s",
-    change: "-8%",
-    trend: "down",
-    icon: Clock,
-    description: "Average feedback session length",
-  },
-  {
-    title: "Response Rate",
-    value: "76%",
-    change: "+5%",
-    trend: "up",
-    icon: TrendingUp,
-    description: "User participation rate",
-  },
-  {
-    title: "Campaign Budget",
-    value: "$14,250",
-    change: "+24%",
-    trend: "up",
-    icon: DollarSign,
-    description: "Total spent on campaigns",
-  },
-]
-
-const performanceData = [
-  { name: "Jan", uptime: 99.9, responseTime: 250, calls: 420 },
-  { name: "Feb", uptime: 99.8, responseTime: 255, calls: 380 },
-  { name: "Mar", uptime: 99.9, responseTime: 245, calls: 520 },
-  { name: "Apr", uptime: 99.7, responseTime: 260, calls: 480 },
-  { name: "May", uptime: 99.9, responseTime: 240, calls: 600 },
-  { name: "Jun", uptime: 99.8, responseTime: 250, calls: 580 },
-]
-
-const systemMetrics = [
-  {
-    title: "System Uptime",
-    value: "99.9%",
-    icon: Zap,
-    description: "Last 30 days average",
-  },
-  {
-    title: "API Response Time",
-    value: "245ms",
-    icon: Activity,
-    description: "Average response time",
-  },
-  {
-    title: "Active Calls",
-    value: "42",
-    icon: PhoneCall,
-    description: "Current ongoing calls",
-  },
-  {
-    title: "Success Rate",
-    value: "98.2%",
-    icon: BadgeCheck,
-    description: "Call completion rate",
-  },
-]
-
-const mockCampaigns = [
-  {
-    id: 2453,
-    title: "Customer Feedback Q2",
-    successRate: 85,
-    responseRate: 78,
-    keyIssue: "UI Complexity",
-    jiraTicketAssigned: true,
-  },
-  {
-    id: 2454,
-    title: "Product Feature Survey",
-    successRate: 92,
-    responseRate: 81,
-    keyIssue: "Missing Features",
-    jiraTicketAssigned: false,
-  },
-  {
-    id: 2455,
-    title: "User Experience Improvement",
-    successRate: 88,
-    responseRate: 75,
-    keyIssue: "Navigation Issues",
-    jiraTicketAssigned: true,
-  },
-]
-
-export default function HomePage() {
-  const router = useRouter()
-  const [showThankYou, setShowThankYou] = useState(false)
-  const [countryCode, setCountryCode] = useState("+1");
-  const [phoneNumber, setPhoneNumber] = useState("");
-
-  const handleCallMe = () => {
-    setShowThankYou(true)
-  }
-
-  const handleCall = async () => {
-    const fullNumber = `${countryCode}${phoneNumber}`;
-    const requestBody = {
-      assistantId: "e42213d6-6d57-4ed8-b201-dae80335fb8b",
-      customer: {
-        number: fullNumber,
-      },
-      phoneNumberId: "c2099d2a-4514-47a4-a2c3-7a711d3635dd",
-    };
-
-    try {
-      const response = await fetch("https://api.vapi.ai/call", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer 7f705381-1926-45b4-8238-df239825e3fc",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to make the call");
-      }
-
-      alert("Call initiated successfully!");
-    } catch (error) {
-      alert(`Error: ${error.message}`);
-    }
-  };
-
+export default function Home() {
   return (
-    <div className="space-y-8">
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Welcome to Our Platform</CardTitle>
-          <CardDescription>
-            Experience AI Voice agent campaigns for customer interviews. We've designed this demo on a limited problem
-            and would like you to be a sample customer using the following scenario.
-            <br></br>
-            <br></br>
-          </CardDescription>
-          <CardDescription className="bg-gray-400 text-white p-4 rounded-lg">
-            You are a customer thinking about booking a trip on a platform called Travel.com. You have made a profile and have browsed for a flight & hotel but have not yet made a flight purchase. Travel.com is conducting a study to improve conversion, and you have been selected to take a survey.
-            <br></br>
-            Fill in your number and click the "Call me now" button to begin the interview.
-          </CardDescription>
-
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center space-x-2 md:w-1/2">
-            <Select defaultValue={countryCode} onValueChange={setCountryCode}>
-              <SelectTrigger className="w-[100px]">
-                <SelectValue placeholder="Country" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="+1">🇺🇸 (+1)</SelectItem>
-                <SelectItem value="+44">🇬🇧 (+44)</SelectItem>
-                <SelectItem value="+60">🇲🇾 (+60)</SelectItem>
-              </SelectContent>
-            </Select>
-            <Input
-              type="tel"
-              placeholder="Enter your number"
-              value={phoneNumber}
-              onChange={(e) => {
-                const value = e.target.value.replace(/\D/g, "")
-                if (value.length <= 10) {
-                  setPhoneNumber(value)
-                }
-              }}
-              className="flex-1"
-            />
-            <Button onClick={handleCall}>Call me now</Button>
+    <div className="flex flex-col bg-black text-white" key={Date.now()}>
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl" />
+        </div>
+        <div className="container relative z-10 text-center px-4 py-32">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">
+            {"Proximity".split("").map((char, index) => (
+              <span
+                key={index}
+                className={`inline-block opacity-0 animate-float-up`}
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                {char}
+              </span>
+            ))}
+          </h1>
+          <br />
+          <h6 className="text-2xl md:text-2xl mb-6">Helping you being close to the customer, at scale.</h6>
+          <br />
+          <p className="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+            Surveys don't produce in-depth insights while manual interviews take weeks - our AI interviewer voice agent
+            Proximity optimizes for insight without compromising on speed. Sign in below to see how simple and seamless
+            our solution is!
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Link href="/interview/1">
+              <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
+                Try Now
+              </Button>
+            </Link>
+            <Button size="lg" variant="outline" className="border-white/20">
+              Read Docs
+            </Button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <Button onClick={() => router.push("/campaigns")}>New Campaign</Button>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        {metrics.map((metric, index) => (
-          <motion.div
-            key={metric.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{metric.title}</CardTitle>
-                <metric.icon className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{metric.value}</div>
-                <div className="flex items-center text-xs">
-                  {metric.trend === "up" ? (
-                    <ArrowUp className="h-4 w-4 text-green-500" />
-                  ) : (
-                    <ArrowDown className="h-4 w-4 text-red-500" />
-                  )}
-                  <span className={metric.trend === "up" ? "text-green-500" : "text-red-500"}>{metric.change}</span>
-                  <span className="ml-1 text-muted-foreground">vs last month</span>
-                </div>
-                <p className="mt-2 text-xs text-muted-foreground">{metric.description}</p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="col-span-2">
-          <CardHeader>
-            <CardTitle>Performance Overview</CardTitle>
-            <CardDescription>System performance and call volume metrics</CardDescription>
-          </CardHeader>
-          <CardContent className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={performanceData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis yAxisId="left" />
-                <YAxis yAxisId="right" orientation="right" />
-                <Tooltip />
-                <Line yAxisId="left" type="monotone" dataKey="uptime" stroke="#8884d8" name="Uptime %" />
-                <Line
-                  yAxisId="right"
-                  type="monotone"
-                  dataKey="responseTime"
-                  stroke="#82ca9d"
-                  name="Response Time (ms)"
-                />
-                <Line yAxisId="right" type="monotone" dataKey="calls" stroke="#ffc658" name="Total Calls" />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>System Health</CardTitle>
-            <CardDescription>Current system metrics and status</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {systemMetrics.map((metric) => (
-                <div key={metric.title} className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-2 rounded-full bg-background">
-                      <metric.icon className="h-4 w-4 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-medium">{metric.title}</div>
-                      <div className="text-xs text-muted-foreground">{metric.description}</div>
-                    </div>
-                  </div>
-                  <div className="font-bold">{metric.value}</div>
-                </div>
-              ))}
+      {/* Stats Section */}
+      <section className="py-16 relative">
+        <div className="absolute inset-0">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/10 rounded-full blur-3xl" />
+        </div>
+        <div className="container relative">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-3xl font-bold mb-4">
+                Your user interviews
+                <br />
+                enriched with AI.
+              </h2>
             </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Latest campaign activities and updates</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {mockCampaigns.map((campaign) => (
-                <Link key={campaign.id} href={`/reports/${campaign.id}`} className="block">
-                  <div className="flex items-center space-x-4 p-2 rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="p-2 rounded-full bg-muted">
-                      <UserCheck className="h-4 w-4 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-medium">Campaign #{campaign.id} completed</div>
-                      <div className="text-sm text-muted-foreground">
-                        {campaign.responseRate}% response rate • {campaign.successRate}% success rate
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Budget Overview</CardTitle>
-            <CardDescription>Campaign spending and budget allocation</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-medium">Total Budget Spent</div>
-                  <div className="text-2xl font-bold">$14,250</div>
-                </div>
-                <div>
-                  <div className="font-medium">Remaining Budget</div>
-                  <div className="text-2xl font-bold">$5,750</div>
-                </div>
+            <div className="grid gap-8">
+              <div>
+                <div className="text-5xl font-bold text-purple-500">5</div>
+                <div className="text-gray-400">ACTIVE ACCOUNTS</div>
               </div>
-              <div className="space-y-2">
-                <div className="text-sm font-medium">Budget Utilization</div>
-                <div className="h-2 bg-muted rounded-full">
-                  <div className="h-full bg-primary rounded-full" style={{ width: "71%" }} />
-                </div>
-                <div className="text-xs text-muted-foreground">71% of total budget utilized</div>
+              <div>
+                <div className="text-5xl font-bold text-cyan-500">100h+</div>
+                <div className="text-gray-400">REAL INTERVIEW DATA</div>
+              </div>
+              <div>
+                <div className="text-5xl font-bold text-emerald-500">$0.35</div>
+                <div className="text-gray-400">AVERAGE COST PER ENGAGEMENT</div>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </div>
+      </section>
 
-      <Dialog open={showThankYou} onOpenChange={setShowThankYou}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Call requested</DialogTitle>
-            <DialogDescription>Thank you for your interest. You can expect a call shortly.</DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button onClick={() => setShowThankYou(false)}>Close</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {/* Features Section */}
+      <section className="py-32 relative">
+        <div className="container relative">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-3xl font-bold mb-4">
+                Made for
+                <br />
+                mass adoption.
+              </h2>
+            </div>
+            <div className="grid gap-8">
+              <div className="p-6 rounded-lg bg-white/5">
+                <h3 className="text-xl font-semibold mb-2">Fast</h3>
+                <p className="text-gray-400">
+                  A seamless interview experience. Proximity has latency of 400 milliseconds — and as AI gets better, so
+                  will the solution.
+                </p>
+              </div>
+              <div className="p-6 rounded-lg bg-white/5">
+                <h3 className="text-xl font-semibold mb-2">Scalable</h3>
+                <p className="text-gray-400">
+                  Get big, quick. Proximity is made to handle thousands of calls at any given time, and provides instant
+                  insights for both UX and product teams.
+                </p>
+              </div>
+              <div className="p-6 rounded-lg bg-white/5">
+                <h3 className="text-xl font-semibold mb-2">Robust</h3>
+                <p className="text-gray-400">
+                  The AI model are validated by hundereds of user interview recordings that were conducted independently
+                  of each other, ensuring your agents remains consise and hallucination resistant.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Build Section */}
+      <section className="py-32 relative">
+        <div className="container">
+          <h2 className="text-3xl font-bold mb-16">Empower your research</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              "User Interviews",
+              "Sentiment Analysis",
+              "Feedback Collection",
+              "Usability Testing",
+              "Customer Insights",
+            ].map((category) => (
+              <div key={category} className="p-6 rounded-lg bg-white/5 hover:bg-purple-600/10 transition-colors">
+                <h3 className="text-xl font-semibold mb-4">{category}</h3>
+                <p className="text-gray-400">
+                  Enhance your {category.toLowerCase()} with AI-powered voice agents for deeper, more efficient
+                  research.
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Community Section */}
+      <section className="py-32 relative">
+        <div className="absolute inset-0">
+          <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-purple-500/20 to-transparent" />
+        </div>
+        <div className="container relative">
+          <h2 className="text-3xl font-bold mb-8 text-center">Built on trust.</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div className="flex items-center justify-center p-8 bg-white/5 rounded-lg hover:bg-white/10 transition-all">
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/AIRBUS_Blue%201-UFumBiRp81gcEVbYBBuACzHQgsraA4.png"
+                alt="Airbus"
+                width={200}
+                height={60}
+                className="w-full h-12 object-contain"
+              />
+            </div>
+            <div className="flex items-center justify-center p-8 bg-white/5 rounded-lg hover:bg-white/10 transition-all">
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/McKinsey_&_Company-Logo.wine%201-2quScwx9ddlHmw05GnCxKURY3BHsUg.png"
+                alt="McKinsey & Company"
+                width={200}
+                height={60}
+                className="w-full h-12 object-contain"
+              />
+            </div>
+            <div className="flex items-center justify-center p-8 bg-white/5 rounded-lg hover:bg-white/10 transition-all">
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/5ae89abab318ed3a4a642635_logo_horz_white_bg@2x%201-egLMPwPLYHD8KYDhz2yekGRsoCd6eZ.png"
+                alt="TapTap Send"
+                width={200}
+                height={60}
+                className="w-full h-12 object-contain"
+              />
+            </div>
+          </div>
+          <div className="text-center">
+            <p className="text-xl mb-8">
+              It's time to join hundereds of product managers,
+              <br />
+              UX researchers, and startups using Proximity.
+            </p>
+            <Link href="/interview/1">
+              <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
+                Try Now <ArrowRight className="ml-2" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-20 border-t border-white/10">
+        <div className="container">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <div className="font-bold text-xl mb-4">Proximity</div>
+            </div>
+            <div className="md:col-span-3 text-right text-gray-400">© Proximity 2025</div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
